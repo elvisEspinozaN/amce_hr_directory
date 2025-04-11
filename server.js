@@ -31,6 +31,20 @@ async function init() {
 
   await client.query(SQL);
   console.log("tables created");
+
+  // seeded initial data
+  SQL = `
+    INSERT INTO departments(name) VALUES('Human Resources');
+    INSERT INTO departments(name) VALUES('Finance');
+    INSERT INTO departments(name) VALUES('Marketing');
+
+    INSERT INTO employees(name, department_id) VALUES('Elvis Esp', (SELECT id FROM departments WHERE name='Human Resources'));
+    INSERT INTO employees(name, department_id) VALUES('Sophia Pen', (SELECT id FROM departments WHERE name='Finance'));
+    INSERT INTO employees(name, department_id) VALUES('Joe Smith', (SELECT id FROM departments WHERE name='Marketing'));
+  `;
+
+  await client.query(SQL);
+  console.log("data seeded");
 }
 
 init();
